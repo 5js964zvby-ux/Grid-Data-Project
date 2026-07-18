@@ -213,3 +213,37 @@ const navObserver = new IntersectionObserver(entries => {
 }, {rootMargin:'-25% 0px -60% 0px', threshold:[0,.15,.35,.6]});
 
 observedSections.forEach(section => navObserver.observe(section));
+
+
+/* Expand project images without leaving the page */
+const lightbox = document.getElementById("imageLightbox");
+const lightboxImage = document.getElementById("lightboxImage");
+const lightboxCaption = document.getElementById("lightboxCaption");
+const lightboxClose = document.getElementById("lightboxClose");
+
+function closeLightbox(){
+  lightbox.classList.remove("open");
+  lightbox.setAttribute("aria-hidden","true");
+  document.body.classList.remove("lightbox-open");
+  lightboxImage.src = "";
+}
+
+document.querySelectorAll(".lightbox-trigger").forEach(trigger => {
+  trigger.addEventListener("click", () => {
+    lightboxImage.src = trigger.dataset.image;
+    lightboxImage.alt = trigger.querySelector("img")?.alt || "Expanded project image";
+    lightboxCaption.textContent = trigger.dataset.caption || "";
+    lightbox.classList.add("open");
+    lightbox.setAttribute("aria-hidden","false");
+    document.body.classList.add("lightbox-open");
+    lightboxClose.focus();
+  });
+});
+
+lightboxClose.addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", event => {
+  if(event.target === lightbox) closeLightbox();
+});
+document.addEventListener("keydown", event => {
+  if(event.key === "Escape" && lightbox.classList.contains("open")) closeLightbox();
+});

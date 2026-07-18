@@ -51,8 +51,8 @@
           <a class="button button-ghost" href="https://www.linkedin.com/in/mason-mcgregor-97270738a/" target="_blank" rel="noopener">
             LinkedIn
           </a>
-          <a class="button button-ghost" href="assets/mason-mcgregor-resume.pdf">
-            Résumé
+          <a class="button button-ghost" href="assets/mason-mcgregor-resume.pdf" target="_blank" rel="noopener">
+            Résumé draft
           </a>
         </div>
 
@@ -211,43 +211,33 @@
           <div class="chart-header">
             <div>
               <span class="chart-kicker">ANONYMIZED EXAMPLE</span>
-              <h3>Historical operating trend</h3>
+              <h3>MW, MVAR &amp; power factor over time</h3>
             </div>
-            <div class="chart-legend">
-              <span><i class="legend-main"></i>Hourly series</span>
-              <span><i class="legend-average"></i>Rolling average</span>
-            </div>
+            <span class="final-asset-label">FINAL GRAPH</span>
           </div>
 
-          <svg class="animated-chart" viewBox="0 0 1000 500" role="img" aria-label="Animated placeholder time-series graph">
-            <defs>
-              <linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stop-color="#2f75ad" stop-opacity=".28"/>
-                <stop offset="100%" stop-color="#2f75ad" stop-opacity="0"/>
-              </linearGradient>
-            </defs>
-
-            <g class="chart-grid">
-              <line x1="80" y1="95" x2="940" y2="95"/>
-              <line x1="80" y1="175" x2="940" y2="175"/>
-              <line x1="80" y1="255" x2="940" y2="255"/>
-              <line x1="80" y1="335" x2="940" y2="335"/>
-              <line x1="80" y1="415" x2="940" y2="415"/>
-            </g>
-
-            <path class="chart-area" d="M80 365 L135 330 L190 350 L245 285 L300 310 L355 235 L410 270 L465 195 L520 225 L575 165 L630 215 L685 145 L740 185 L795 120 L850 160 L905 105 L940 130 L940 415 L80 415 Z"/>
-            <polyline class="chart-line chart-line-main" points="80,365 135,330 190,350 245,285 300,310 355,235 410,270 465,195 520,225 575,165 630,215 685,145 740,185 795,120 850,160 905,105 940,130"/>
-            <polyline class="chart-line chart-line-average" points="80,350 135,340 190,330 245,312 300,292 355,270 410,248 465,225 520,208 575,190 630,177 685,162 740,150 795,138 850,128 905,120 940,116"/>
-
-            <line class="event-marker" x1="685" y1="80" x2="685" y2="415"/>
-            <text x="700" y="100" class="chart-label">Event marker</text>
-
-            <text x="80" y="455" class="axis-label">Year 1</text>
-            <text x="875" y="455" class="axis-label">Year 10</text>
-          </svg>
+          <button
+            type="button"
+            class="chart-media lightbox-trigger"
+            data-image="assets/anonymized-time-series.png"
+            data-caption="Anonymized MW, MVAR, and leading/lagging power-factor time series."
+            aria-label="Enlarge the anonymized time-series graph"
+          >
+            <img
+              class="chart-image"
+              src="assets/anonymized-time-series.png"
+              alt="Anonymized time-series plots for MW, MVAR, and leading or lagging power factor across approximately ten years"
+              loading="lazy"
+            >
+            <span class="zoom-hint">Click to enlarge</span>
+          </button>
 
           <figcaption>
-            Placeholder visualization. Replace this with your approved anonymized graph before publishing the final QR code.
+            Approved anonymized example showing seasonal behavior, rolling averages,
+            extrema, and long-term operating patterns.
+            <a href="assets/anonymized-time-series.png" target="_blank" rel="noopener">
+              Open full-resolution graph ↗
+            </a>
           </figcaption>
         </figure>
 
@@ -312,7 +302,12 @@
         </div>
 
         <aside class="profile-card reveal">
-          <div class="profile-monogram">MM</div>
+          <img
+            class="profile-photo"
+            src="assets/mason-mcgregor-headshot.jpg"
+            alt="Professional headshot of Mason McGregor"
+            loading="lazy"
+          >
           <div>
             <span class="profile-label">PROJECT AUTHOR</span>
             <h3>Mason McGregor</h3>
@@ -323,13 +318,16 @@
             <a class="button button-primary" href="https://www.linkedin.com/in/mason-mcgregor-97270738a/" target="_blank" rel="noopener">
               Connect on LinkedIn
             </a>
-            <a class="button button-outline" href="assets/mason-mcgregor-resume.pdf">
-              View résumé
+            <a class="button button-outline" href="assets/mason-mcgregor-resume.pdf" target="_blank" rel="noopener">
+              View résumé <span class="resource-badge">DRAFT</span>
             </a>
-            <a class="button button-outline" href="assets/grid-data-poster.pdf">
-              View poster
+            <a class="button button-outline" href="assets/grid-data-poster.pdf" target="_blank" rel="noopener">
+              View poster <span class="resource-badge">DRAFT</span>
             </a>
           </div>
+          <p class="resource-note">
+            The résumé and poster are temporary drafts and can be replaced later without changing the website links.
+          </p>
         </aside>
       </div>
     </section>
@@ -347,5 +345,13 @@
     <p>© <span id="year"></span> Mason McGregor</p>
     <p>Interactive engineering project portfolio</p>
   </footer>
+
+  <div class="lightbox" id="imageLightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Expanded project image">
+    <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Close expanded image">×</button>
+    <div class="lightbox-content">
+      <img id="lightboxImage" src="" alt="">
+      <p id="lightboxCaption"></p>
+    </div>
+  </div>
 </body>
 </html>
