@@ -82,6 +82,10 @@ workflowData.forEach((step, index) => {
 function showWorkflowStep(index, scrollIntoView = false) {
   activeStep = (index + workflowData.length) % workflowData.length;
   const step = workflowData[activeStep];
+  const detailCard = document.getElementById("workflowDetail");
+  detailCard.classList.remove("detail-refresh");
+  void detailCard.offsetWidth;
+  detailCard.classList.add("detail-refresh");
 
   document.getElementById("detailNumber").textContent =
     `STAGE ${String(activeStep + 1).padStart(2, "0")}`;
@@ -190,3 +194,22 @@ chartObserver.observe(chartCard);
 
 /* Footer year */
 document.getElementById("year").textContent = new Date().getFullYear();
+
+
+/* Highlight the navigation item for the section currently in view */
+const navLinks = [...document.querySelectorAll('.site-header nav a')];
+const observedSections = navLinks
+  .map(link => document.querySelector(link.getAttribute('href')))
+  .filter(Boolean);
+
+const navObserver = new IntersectionObserver(entries => {
+  const visible = entries
+    .filter(entry => entry.isIntersecting)
+    .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+  if (!visible) return;
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === `#${visible.target.id}`);
+  });
+}, {rootMargin:'-25% 0px -60% 0px', threshold:[0,.15,.35,.6]});
+
+observedSections.forEach(section => navObserver.observe(section));
