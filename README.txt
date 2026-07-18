@@ -1,11 +1,13 @@
-GRID DATA PROJECT — VERSION 3
+GRID DATA PROJECT — VERSION 3.1
 
-This version tightens the hero so the action buttons appear on a normal laptop screen, makes the header consistently navy, adds a plain-language SCADA definition, reduces excess vertical spacing, highlights the active navigation section, and animates workflow detail changes.
+Your LinkedIn profile has already been connected to both LinkedIn buttons:
+https://www.linkedin.com/in/mason-mcgregor-97270738a/
 
 UPLOAD
-1. Replace YOUR_LINKEDIN_URL in index.html with your LinkedIn URL.
-2. Upload index.html, style.css, script.js, and the assets folder to the root of the GitHub repository.
-3. Commit the changes and refresh with Ctrl+F5 after GitHub Pages republishes.
+1. Upload index.html, style.css, script.js, and the assets folder to the root of the GitHub repository.
+2. Allow GitHub to replace the current files.
+3. Commit the changes.
+4. Wait 1–3 minutes, then refresh the website with Ctrl+F5.
 
 ASSETS TO ADD LATER
 - assets/mason-mcgregor-resume.pdf
