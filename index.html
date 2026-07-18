@@ -6,8 +6,8 @@
   <meta name="description" content="Interactive engineering project portfolio by Mason McGregor.">
   <meta name="theme-color" content="#071a2f">
   <title>Grid Data Project | Mason McGregor</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="style.css?v=4.1">
+  <script src="script.js?v=4.1" defer></script>
 </head>
 
 <body>
@@ -26,7 +26,7 @@
       <a href="#about">About</a>
     </nav>
 
-    <a class="header-cta" href="#workflow">Explore</a>
+    <a class="header-cta" href="assets/grid-data-poster.pdf" target="_blank" rel="noopener">View poster</a>
   </header>
 
   <main id="main">
@@ -216,9 +216,11 @@
             <span class="final-asset-label">FINAL GRAPH</span>
           </div>
 
-          <button
-            type="button"
+          <a
             class="chart-media lightbox-trigger"
+            href="assets/anonymized-time-series.png"
+            target="_blank"
+            rel="noopener"
             data-image="assets/anonymized-time-series.png"
             data-caption="Anonymized MW, MVAR, and leading/lagging power-factor time series."
             aria-label="Enlarge the anonymized time-series graph"
@@ -230,7 +232,7 @@
               loading="lazy"
             >
             <span class="zoom-hint">Click to enlarge</span>
-          </button>
+          </a>
 
           <figcaption>
             Approved anonymized example showing seasonal behavior, rolling averages,

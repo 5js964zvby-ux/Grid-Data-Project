@@ -228,16 +228,20 @@ function closeLightbox(){
   lightboxImage.src = "";
 }
 
-document.querySelectorAll(".lightbox-trigger").forEach(trigger => {
-  trigger.addEventListener("click", () => {
-    lightboxImage.src = trigger.dataset.image;
-    lightboxImage.alt = trigger.querySelector("img")?.alt || "Expanded project image";
-    lightboxCaption.textContent = trigger.dataset.caption || "";
-    lightbox.classList.add("open");
-    lightbox.setAttribute("aria-hidden","false");
-    document.body.classList.add("lightbox-open");
-    lightboxClose.focus();
-  });
+document.addEventListener("click", event => {
+  const trigger = event.target.closest(".lightbox-trigger");
+  if (!trigger || !lightbox) return;
+
+  event.preventDefault();
+
+  const previewImage = trigger.querySelector("img");
+  lightboxImage.src = trigger.dataset.image || trigger.getAttribute("href");
+  lightboxImage.alt = previewImage ? previewImage.alt : "Expanded project image";
+  lightboxCaption.textContent = trigger.dataset.caption || "";
+  lightbox.classList.add("open");
+  lightbox.setAttribute("aria-hidden","false");
+  document.body.classList.add("lightbox-open");
+  lightboxClose.focus();
 });
 
 lightboxClose.addEventListener("click", closeLightbox);

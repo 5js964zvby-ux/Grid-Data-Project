@@ -1540,3 +1540,14 @@ body.lightbox-open{
     padding:16px;
   }
 }
+
+
+/* ---------- Version 4.1 reliability refinements ---------- */
+.chart-media:focus-visible{
+  outline:4px solid var(--gold);
+  outline-offset:4px;
+}
+
+.header-cta{
+  white-space:nowrap;
+}
