@@ -3,11 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive engineering project overview by Mason McGregor.">
   <title>Grid Data Project | Mason McGregor</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <h1>Turning 10 Years of Grid Data Into Engineering Insight</h1>
-  <p>Mason McGregor</p>
-  <p>Interactive project page coming soon.</p>
+<header class="site-header">
+  <a class="brand" href="#top"><span>MM</span>Mason McGregor</a>
+  <nav><a href="#overview">Overview</a><a href="#workflow">Workflow</a><a href="#results">Results</a><a href="#about">About</a></nav>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div>
+    <p class="eyebrow">INTERACTIVE ENGINEERING PROJECT</p>
+    <h1>Turning 10 Years of Grid Data Into Engineering Insight</h1>
+    <p class="lead">A reusable workflow that transforms historical grid operating data into organized records, statistical analysis, and visual reports for engineering studies.</p>
+    <div class="actions">
+      <a class="button primary" href="#workflow">Explore the workflow</a>
+      <a class="button secondary" href="YOUR_LINKEDIN_URL" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="button secondary" href="assets/mason-mcgregor-resume.pdf">Résumé</a>
+    </div>
+    <p class="note">Public-facing content is anonymized and excludes proprietary system information.</p>
+  </div>
+  <div class="hero-visual"><div class="ring ring1"></div><div class="ring ring2"></div><div class="core"><span>10 YEARS</span><strong>87,000+</strong><small>hourly records per data stream</small></div></div>
+</section>
+
+<section class="section light" id="overview">
+  <div class="heading"><p class="eyebrow">PROJECT OVERVIEW</p><h2>From difficult-to-use files to repeatable engineering analysis</h2></div>
+  <div class="cards">
+    <article><b>01</b><h3>The challenge</h3><p>Historical records were spread across raw files with inconsistent naming, formatting, and data quality.</p></article>
+    <article><b>02</b><h3>The solution</h3><p>I developed an end-to-end process to parse, standardize, clean, store, analyze, and visualize the data.</p></article>
+    <article><b>03</b><h3>The value</h3><p>Engineers can access consistent historical insight faster while reducing repetitive manual work.</p></article>
+  </div>
+</section>
+
+<section class="section dark" id="workflow">
+  <div class="heading"><p class="eyebrow">INTERACTIVE WORKFLOW</p><h2>Select a stage to explore how the system works</h2><p>Each stage converts raw information into a more useful engineering output.</p></div>
+  <div class="workflow" id="workflowSteps"></div>
+  <article class="detail">
+    <span id="detailNumber"></span><h3 id="detailTitle"></h3>
+    <div class="detail-grid">
+      <div><b>INPUT</b><p id="detailInput"></p></div>
+      <div><b>PROCESS</b><p id="detailProcess"></p></div>
+      <div><b>OUTPUT</b><p id="detailOutput"></p></div>
+      <div><b>ENGINEERING VALUE</b><p id="detailValue"></p></div>
+    </div>
+    <div class="controls"><button id="prev">← Previous</button><div id="dots"></div><button id="next">Next →</button></div>
+  </article>
+</section>
+
+<section class="section light" id="results">
+  <div class="heading"><p class="eyebrow">EXAMPLE OUTPUT</p><h2>Visual analysis makes long-term behavior easier to understand</h2></div>
+  <div class="results">
+    <figure><img src="assets/example-graph.svg" alt="Placeholder engineering graph"><figcaption>Replace this placeholder with your approved anonymized graph.</figcaption></figure>
+    <div><h3>What the reports can reveal</h3><ul><li>Long-term trends and seasonal behavior</li><li>Minimum, maximum, average, and variability</li><li>Power-factor behavior and unusual events</li><li>Rolling averages and first-operation markers</li></ul></div>
+  </div>
+</section>
+
+<section class="section impact"><div><strong>Faster</strong><span>engineering studies</span></div><div><strong>Consistent</strong><span>analysis methods</span></div><div><strong>Searchable</strong><span>historical records</span></div><div><strong>Reusable</strong><span>reporting workflow</span></div></section>
+
+<section class="section light" id="about">
+  <div class="about">
+    <div><p class="eyebrow">ABOUT THE PROJECT</p><h2>Built at the intersection of power systems, automation, and data analysis</h2><p>This project demonstrates how engineering software can turn large historical datasets into practical, repeatable insight.</p></div>
+    <div class="about-card"><h3>Mason McGregor</h3><p>Electrical Engineering Student<br>South Dakota State University</p><div class="actions"><a class="button primary" href="YOUR_LINKEDIN_URL" target="_blank" rel="noopener">Connect on LinkedIn</a><a class="button outline" href="assets/mason-mcgregor-resume.pdf">View Résumé</a><a class="button outline" href="assets/grid-data-poster.pdf">View Poster</a></div></div>
+  </div>
+</section>
+</main>
+<footer>© <span id="year"></span> Mason McGregor · Interactive project portfolio</footer>
 </body>
 </html>
