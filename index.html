@@ -3,74 +3,345 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Interactive engineering project overview by Mason McGregor.">
+  <meta name="description" content="Interactive engineering project portfolio by Mason McGregor.">
+  <meta name="theme-color" content="#071a2f">
   <title>Grid Data Project | Mason McGregor</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
+
 <body>
-<header class="site-header">
-  <a class="brand" href="#top"><span>MM</span>Mason McGregor</a>
-  <nav><a href="#overview">Overview</a><a href="#workflow">Workflow</a><a href="#results">Results</a><a href="#about">About</a></nav>
-</header>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-<main id="top">
-<section class="hero">
-  <div>
-    <p class="eyebrow">INTERACTIVE ENGINEERING PROJECT</p>
-    <h1>Turning 10 Years of Grid Data Into Engineering Insight</h1>
-    <p class="lead">A reusable workflow that transforms historical grid operating data into organized records, statistical analysis, and visual reports for engineering studies.</p>
-    <div class="actions">
-      <a class="button primary" href="#workflow">Explore the workflow</a>
-      <a class="button secondary" href="www.linkedin.com/in/mason-mcgregor-97270738a" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="button secondary" href="assets/mason-mcgregor-resume.pdf">Résumé</a>
-    </div>
-    <p class="note">Public-facing content is anonymized and excludes proprietary system information.</p>
-  </div>
-  <div class="hero-visual"><div class="ring ring1"></div><div class="ring ring2"></div><div class="core"><span>10 YEARS</span><strong>87,000+</strong><small>hourly records per data stream</small></div></div>
-</section>
+  <header class="site-header" id="top">
+    <a class="brand" href="#top" aria-label="Mason McGregor home">
+      <span class="brand-mark">MM</span>
+      <span class="brand-name">Mason McGregor</span>
+    </a>
 
-<section class="section light" id="overview">
-  <div class="heading"><p class="eyebrow">PROJECT OVERVIEW</p><h2>From difficult-to-use files to repeatable engineering analysis</h2></div>
-  <div class="cards">
-    <article><b>01</b><h3>The challenge</h3><p>Historical records were spread across raw files with inconsistent naming, formatting, and data quality.</p></article>
-    <article><b>02</b><h3>The solution</h3><p>I developed an end-to-end process to parse, standardize, clean, store, analyze, and visualize the data.</p></article>
-    <article><b>03</b><h3>The value</h3><p>Engineers can access consistent historical insight faster while reducing repetitive manual work.</p></article>
-  </div>
-</section>
+    <nav aria-label="Primary navigation">
+      <a href="#challenge">Challenge</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#results">Results</a>
+      <a href="#about">About</a>
+    </nav>
 
-<section class="section dark" id="workflow">
-  <div class="heading"><p class="eyebrow">INTERACTIVE WORKFLOW</p><h2>Select a stage to explore how the system works</h2><p>Each stage converts raw information into a more useful engineering output.</p></div>
-  <div class="workflow" id="workflowSteps"></div>
-  <article class="detail">
-    <span id="detailNumber"></span><h3 id="detailTitle"></h3>
-    <div class="detail-grid">
-      <div><b>INPUT</b><p id="detailInput"></p></div>
-      <div><b>PROCESS</b><p id="detailProcess"></p></div>
-      <div><b>OUTPUT</b><p id="detailOutput"></p></div>
-      <div><b>ENGINEERING VALUE</b><p id="detailValue"></p></div>
-    </div>
-    <div class="controls"><button id="prev">← Previous</button><div id="dots"></div><button id="next">Next →</button></div>
-  </article>
-</section>
+    <a class="header-cta" href="#workflow">Explore</a>
+  </header>
 
-<section class="section light" id="results">
-  <div class="heading"><p class="eyebrow">EXAMPLE OUTPUT</p><h2>Visual analysis makes long-term behavior easier to understand</h2></div>
-  <div class="results">
-    <figure><img src="assets/example-graph.svg" alt="Placeholder engineering graph"><figcaption>Replace this placeholder with your approved anonymized graph.</figcaption></figure>
-    <div><h3>What the reports can reveal</h3><ul><li>Long-term trends and seasonal behavior</li><li>Minimum, maximum, average, and variability</li><li>Power-factor behavior and unusual events</li><li>Rolling averages and first-operation markers</li></ul></div>
-  </div>
-</section>
+  <main id="main">
+    <section class="hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-one" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
 
-<section class="section impact"><div><strong>Faster</strong><span>engineering studies</span></div><div><strong>Consistent</strong><span>analysis methods</span></div><div><strong>Searchable</strong><span>historical records</span></div><div><strong>Reusable</strong><span>reporting workflow</span></div></section>
+      <div class="hero-copy reveal">
+        <p class="eyebrow">INTERACTIVE ENGINEERING PROJECT</p>
+        <h1>Turning 10 Years of Grid Data Into Engineering Insight</h1>
+        <p class="hero-lead">
+          A reusable workflow that transforms historical grid operating data
+          into organized records, statistical analysis, and visual reports
+          for engineering studies.
+        </p>
 
-<section class="section light" id="about">
-  <div class="about">
-    <div><p class="eyebrow">ABOUT THE PROJECT</p><h2>Built at the intersection of power systems, automation, and data analysis</h2><p>This project demonstrates how engineering software can turn large historical datasets into practical, repeatable insight.</p></div>
-    <div class="about-card"><h3>Mason McGregor</h3><p>Electrical Engineering Student<br>South Dakota State University</p><div class="actions"><a class="button primary" href="www.linkedin.com/in/mason-mcgregor-97270738a" target="_blank" rel="noopener">Connect on LinkedIn</a><a class="button outline" href="assets/mason-mcgregor-resume.pdf">View Résumé</a><a class="button outline" href="assets/grid-data-poster.pdf">View Poster</a></div></div>
-  </div>
-</section>
-</main>
-<footer>© <span id="year"></span> Mason McGregor · Interactive project portfolio</footer>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#workflow">
+            Explore the workflow
+            <span aria-hidden="true">↓</span>
+          </a>
+          <a class="button button-ghost" href="YOUR_LINKEDIN_URL" target="_blank" rel="noopener">
+            LinkedIn
+          </a>
+          <a class="button button-ghost" href="assets/mason-mcgregor-resume.pdf">
+            Résumé
+          </a>
+        </div>
+
+        <p class="confidentiality-note">
+          Public-facing content is anonymized and excludes proprietary system information.
+        </p>
+      </div>
+
+      <div class="hero-system reveal" aria-label="Project scale">
+        <div class="orbit orbit-large"></div>
+        <div class="orbit orbit-medium"></div>
+        <div class="orbit orbit-small"></div>
+
+        <div class="data-core">
+          <span class="core-kicker">PROJECT SCALE</span>
+          <strong><span class="counter" data-target="10">0</span> YEARS</strong>
+          <span class="core-divider"></span>
+          <strong><span class="counter" data-target="87000">0</span>+</strong>
+          <small>hourly records<br>per data stream</small>
+        </div>
+
+        <span class="orbit-label label-one">MW</span>
+        <span class="orbit-label label-two">MVAR</span>
+        <span class="orbit-label label-three">PF</span>
+        <span class="orbit-label label-four">TIME</span>
+      </div>
+
+      <a class="scroll-cue" href="#challenge" aria-label="Scroll to project challenge">
+        <span>Scroll to explore</span>
+        <i></i>
+      </a>
+    </section>
+
+    <section class="section section-light" id="challenge">
+      <div class="section-intro reveal">
+        <p class="eyebrow">THE CHALLENGE</p>
+        <h2>Years of valuable operating history existed, but extracting useful insight took too much manual effort.</h2>
+      </div>
+
+      <div class="challenge-layout">
+        <article class="challenge-copy reveal">
+          <p>
+            Historical records were distributed across raw files with inconsistent naming,
+            formatting, and data quality. Engineers needed a repeatable way to move from
+            scattered source data to trustworthy analysis.
+          </p>
+
+          <div class="before-after">
+            <div class="state state-before">
+              <span class="state-label">BEFORE</span>
+              <h3>Manual file review</h3>
+              <ul>
+                <li>Separate raw files</li>
+                <li>Inconsistent component names</li>
+                <li>Repeated cleaning and plotting</li>
+              </ul>
+            </div>
+
+            <div class="transition-arrow" aria-hidden="true">→</div>
+
+            <div class="state state-after">
+              <span class="state-label">AFTER</span>
+              <h3>Repeatable engineering workflow</h3>
+              <ul>
+                <li>Standardized records</li>
+                <li>Searchable historical data</li>
+                <li>Automated statistics and reports</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <div class="metric-stack reveal">
+          <article class="metric-card">
+            <span class="metric-number counter" data-target="10">0</span>
+            <span class="metric-unit">years</span>
+            <p>of historical operating records</p>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-number counter" data-target="87000">0</span>
+            <span class="metric-unit">+</span>
+            <p>hourly records per data stream</p>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-number">6</span>
+            <span class="metric-unit">stages</span>
+            <p>from raw data to engineering decisions</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="workflow">
+      <div class="section-intro reveal">
+        <p class="eyebrow">INTERACTIVE WORKFLOW</p>
+        <h2>Follow the data from source files to engineering decisions.</h2>
+        <p>Select any stage to see its input, process, output, and value.</p>
+      </div>
+
+      <div class="workflow-shell reveal">
+        <div class="workflow-line" aria-hidden="true"></div>
+        <div class="workflow-steps" id="workflowSteps"></div>
+      </div>
+
+      <article class="workflow-detail reveal" id="workflowDetail">
+        <div class="detail-topline">
+          <div>
+            <span class="detail-number" id="detailNumber"></span>
+            <h3 id="detailTitle"></h3>
+          </div>
+          <span class="detail-status">ACTIVE STAGE</span>
+        </div>
+
+        <div class="detail-grid">
+          <section>
+            <span class="detail-label">INPUT</span>
+            <p id="detailInput"></p>
+          </section>
+          <section>
+            <span class="detail-label">PROCESS</span>
+            <p id="detailProcess"></p>
+          </section>
+          <section>
+            <span class="detail-label">OUTPUT</span>
+            <p id="detailOutput"></p>
+          </section>
+          <section>
+            <span class="detail-label">ENGINEERING VALUE</span>
+            <p id="detailValue"></p>
+          </section>
+        </div>
+
+        <div class="detail-controls">
+          <button type="button" id="prevStep">← Previous</button>
+          <div class="detail-dots" id="detailDots" aria-label="Workflow progress"></div>
+          <button type="button" id="nextStep">Next stage →</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="section section-light" id="results">
+      <div class="section-intro reveal">
+        <p class="eyebrow">EXAMPLE OUTPUT</p>
+        <h2>Visual reports make long-term behavior easier to interpret.</h2>
+      </div>
+
+      <div class="result-layout">
+        <figure class="chart-card reveal">
+          <div class="chart-header">
+            <div>
+              <span class="chart-kicker">ANONYMIZED EXAMPLE</span>
+              <h3>Historical operating trend</h3>
+            </div>
+            <div class="chart-legend">
+              <span><i class="legend-main"></i>Hourly series</span>
+              <span><i class="legend-average"></i>Rolling average</span>
+            </div>
+          </div>
+
+          <svg class="animated-chart" viewBox="0 0 1000 500" role="img" aria-label="Animated placeholder time-series graph">
+            <defs>
+              <linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#2f75ad" stop-opacity=".28"/>
+                <stop offset="100%" stop-color="#2f75ad" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+
+            <g class="chart-grid">
+              <line x1="80" y1="95" x2="940" y2="95"/>
+              <line x1="80" y1="175" x2="940" y2="175"/>
+              <line x1="80" y1="255" x2="940" y2="255"/>
+              <line x1="80" y1="335" x2="940" y2="335"/>
+              <line x1="80" y1="415" x2="940" y2="415"/>
+            </g>
+
+            <path class="chart-area" d="M80 365 L135 330 L190 350 L245 285 L300 310 L355 235 L410 270 L465 195 L520 225 L575 165 L630 215 L685 145 L740 185 L795 120 L850 160 L905 105 L940 130 L940 415 L80 415 Z"/>
+            <polyline class="chart-line chart-line-main" points="80,365 135,330 190,350 245,285 300,310 355,235 410,270 465,195 520,225 575,165 630,215 685,145 740,185 795,120 850,160 905,105 940,130"/>
+            <polyline class="chart-line chart-line-average" points="80,350 135,340 190,330 245,312 300,292 355,270 410,248 465,225 520,208 575,190 630,177 685,162 740,150 795,138 850,128 905,120 940,116"/>
+
+            <line class="event-marker" x1="685" y1="80" x2="685" y2="415"/>
+            <text x="700" y="100" class="chart-label">Event marker</text>
+
+            <text x="80" y="455" class="axis-label">Year 1</text>
+            <text x="875" y="455" class="axis-label">Year 10</text>
+          </svg>
+
+          <figcaption>
+            Placeholder visualization. Replace this with your approved anonymized graph before publishing the final QR code.
+          </figcaption>
+        </figure>
+
+        <aside class="insight-panel reveal">
+          <p class="eyebrow">WHAT THE REPORTS REVEAL</p>
+          <div class="insight-list">
+            <article>
+              <span>01</span>
+              <div><h3>Long-term trends</h3><p>Identify gradual changes and recurring seasonal behavior.</p></div>
+            </article>
+            <article>
+              <span>02</span>
+              <div><h3>Operating range</h3><p>Compare average, minimum, maximum, and variability.</p></div>
+            </article>
+            <article>
+              <span>03</span>
+              <div><h3>Unusual events</h3><p>Highlight changes that deserve closer engineering review.</p></div>
+            </article>
+            <article>
+              <span>04</span>
+              <div><h3>Power-factor behavior</h3><p>Summarize performance across components and time periods.</p></div>
+            </article>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="impact-section">
+      <div class="impact-grid">
+        <article class="impact-item reveal">
+          <span class="impact-icon">↗</span>
+          <strong>Faster</strong>
+          <p>engineering studies</p>
+        </article>
+        <article class="impact-item reveal">
+          <span class="impact-icon">≋</span>
+          <strong>Consistent</strong>
+          <p>analysis methods</p>
+        </article>
+        <article class="impact-item reveal">
+          <span class="impact-icon">⌕</span>
+          <strong>Searchable</strong>
+          <p>historical records</p>
+        </article>
+        <article class="impact-item reveal">
+          <span class="impact-icon">↻</span>
+          <strong>Reusable</strong>
+          <p>reporting workflow</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-light" id="about">
+      <div class="about-layout">
+        <div class="about-copy reveal">
+          <p class="eyebrow">ABOUT THE PROJECT</p>
+          <h2>Built at the intersection of power systems, automation, and data analysis.</h2>
+          <p>
+            This project demonstrates how engineering software can transform large historical
+            datasets into practical, repeatable insight while reducing repetitive manual work.
+          </p>
+        </div>
+
+        <aside class="profile-card reveal">
+          <div class="profile-monogram">MM</div>
+          <div>
+            <span class="profile-label">PROJECT AUTHOR</span>
+            <h3>Mason McGregor</h3>
+            <p>Electrical Engineering Student<br>South Dakota State University</p>
+          </div>
+
+          <div class="profile-links">
+            <a class="button button-primary" href="YOUR_LINKEDIN_URL" target="_blank" rel="noopener">
+              Connect on LinkedIn
+            </a>
+            <a class="button button-outline" href="assets/mason-mcgregor-resume.pdf">
+              View résumé
+            </a>
+            <a class="button button-outline" href="assets/grid-data-poster.pdf">
+              View poster
+            </a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="reveal">
+        <p class="eyebrow">THE KEY TAKEAWAY</p>
+        <h2>Historical data becomes valuable when engineers can access, trust, and understand it.</h2>
+        <a class="button button-primary" href="#workflow">Explore the workflow again ↑</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> Mason McGregor</p>
+    <p>Interactive engineering project portfolio</p>
+  </footer>
 </body>
 </html>
