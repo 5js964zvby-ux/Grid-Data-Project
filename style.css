@@ -2247,3 +2247,206 @@ body.workflow-focus-open{
     animation:none!important;
   }
 }
+
+
+/* ---------- Version 5.2: final polish ---------- */
+
+/* Mobile navigation */
+.menu-toggle{
+  display:none;
+  position:relative;
+  width:44px;
+  height:44px;
+  padding:0;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:12px;
+  background:rgba(255,255,255,.045);
+  cursor:pointer;
+}
+
+.menu-toggle span{
+  position:absolute;
+  left:12px;
+  width:18px;
+  height:2px;
+  border-radius:2px;
+  background:#fff;
+  transition:transform .22s ease,opacity .22s ease,top .22s ease;
+}
+
+.menu-toggle span:nth-child(1){top:13px}
+.menu-toggle span:nth-child(2){top:20px}
+.menu-toggle span:nth-child(3){top:27px}
+
+.menu-toggle.open span:nth-child(1){
+  top:20px;
+  transform:rotate(45deg);
+}
+
+.menu-toggle.open span:nth-child(2){
+  opacity:0;
+}
+
+.menu-toggle.open span:nth-child(3){
+  top:20px;
+  transform:rotate(-45deg);
+}
+
+.mobile-menu{
+  position:absolute;
+  top:calc(100% + 10px);
+  right:5vw;
+  width:min(280px,90vw);
+  display:grid;
+  gap:4px;
+  padding:10px;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(-8px) scale(.98);
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:16px;
+  color:#fff;
+  background:rgba(6,20,38,.98);
+  box-shadow:0 24px 70px rgba(0,0,0,.38);
+  transition:opacity .2s ease,visibility .2s ease,transform .2s ease;
+}
+
+.mobile-menu.open{
+  opacity:1;
+  visibility:visible;
+  transform:none;
+}
+
+.mobile-menu a{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:46px;
+  padding:9px 12px;
+  border-radius:10px;
+  font-weight:800;
+}
+
+.mobile-menu a:hover,
+.mobile-menu a:focus-visible{
+  color:var(--navy-950);
+  background:var(--gold);
+  outline:none;
+}
+
+.mobile-menu a span{
+  padding:3px 6px;
+  border-radius:999px;
+  color:#80560a;
+  background:#fff0cd;
+  font-size:.58rem;
+  font-weight:950;
+  letter-spacing:.1em;
+}
+
+/* A restrained invitation to interact—not a constant bounce */
+.hero-actions .button-primary{
+  animation:heroCtaInvite 9s ease-in-out 4s infinite;
+}
+
+@keyframes heroCtaInvite{
+  0%,84%,100%{
+    transform:none;
+    box-shadow:0 12px 30px rgba(241,182,67,.2);
+  }
+  88%{
+    transform:translateY(-4px);
+    box-shadow:0 19px 38px rgba(241,182,67,.34);
+  }
+  92%{
+    transform:translateY(0);
+  }
+  95%{
+    transform:translateY(-2px);
+  }
+}
+
+/* Keep the progress badge comfortably clear of the modal close control */
+.focus-information-heading{
+  padding-right:54px;
+}
+
+.workflow-focus-close{
+  top:14px;
+  right:14px;
+}
+
+footer p{
+  margin:.25em 0;
+}
+
+@media(max-width:800px){
+  .site-header{
+    min-height:68px;
+    padding-left:5vw;
+    padding-right:5vw;
+  }
+
+  .site-header nav,
+  .header-cta{
+    display:none;
+  }
+
+  .menu-toggle{
+    display:block;
+  }
+
+  .brand-mark{
+    width:42px;
+    height:42px;
+  }
+}
+
+@media(max-width:520px){
+  .hero{
+    padding-top:96px;
+  }
+
+  .hero-system{
+    min-height:305px;
+  }
+
+  .orbit-large{width:260px;height:260px}
+  .orbit-medium{width:202px;height:202px}
+  .orbit-small{width:150px;height:150px}
+  .data-core{width:150px;height:150px}
+  .data-core strong{font-size:1.16rem}
+
+  .scroll-cue{
+    display:none;
+  }
+
+  .section-intro h2,
+  .about-copy h2{
+    font-size:clamp(2.25rem,11vw,3.05rem);
+    line-height:1.07;
+  }
+
+  .focus-progress-text{
+    display:none;
+  }
+
+  .focus-information-heading{
+    padding-right:54px;
+  }
+
+  .workflow-focus-close{
+    top:max(12px,env(safe-area-inset-top));
+    right:14px;
+  }
+
+  footer{
+    padding-bottom:calc(24px + env(safe-area-inset-bottom));
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .hero-actions .button-primary{
+    animation:none;
+  }
+}

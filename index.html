@@ -6,15 +6,15 @@
   <meta name="description" content="Interactive engineering project portfolio by Mason McGregor.">
   <meta name="theme-color" content="#071a2f">
   <title>Grid Data Project | Mason McGregor</title>
-  <link rel="stylesheet" href="style.css?v=5.1">
-  <script src="script.js?v=5.1" defer></script>
+  <link rel="stylesheet" href="style.css?v=5.2">
+  <script src="script.js?v=5.2" defer></script>
 </head>
 
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header" id="top">
-    <a class="brand" href="#top" aria-label="Mason McGregor home">
+    <a class="brand" href="#top" aria-label="Return to the top of Mason McGregor’s project page" title="Back to top">
       <span class="brand-mark">MM</span>
       <span class="brand-name">Mason McGregor</span>
     </a>
@@ -26,7 +26,30 @@
       <a href="#about">About</a>
     </nav>
 
-    <a class="header-cta" href="assets/grid-data-poster.pdf" target="_blank" rel="noopener">View poster</a>
+    <a class="header-cta" href="assets/grid-data-poster.pdf" target="_blank" rel="noopener">
+      Poster draft
+    </a>
+
+    <button
+      type="button"
+      class="menu-toggle"
+      id="menuToggle"
+      aria-expanded="false"
+      aria-controls="mobileMenu"
+      aria-label="Open site navigation"
+    >
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <a href="#challenge">Challenge</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#results">Results</a>
+      <a href="#about">About</a>
+      <a href="assets/grid-data-poster.pdf" target="_blank" rel="noopener">
+        Poster <span>DRAFT</span>
+      </a>
+    </div>
   </header>
 
   <main id="main">
@@ -315,7 +338,7 @@
 
   <footer>
     <p>© <span id="year"></span> Mason McGregor</p>
-    <p>Interactive engineering project portfolio</p>
+    <p>Built with HTML, CSS, and JavaScript.</p>
   </footer>
 
   <div class="workflow-focus" id="workflowFocus" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="focusTitle">

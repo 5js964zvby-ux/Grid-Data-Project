@@ -9,9 +9,25 @@ function cleanPageUrl() {
   history.replaceState(null, "", cleanUrl);
 }
 
-window.addEventListener("pageshow", () => {
+let landingInteractionStarted = false;
+
+["wheel", "touchstart", "pointerdown", "keydown"].forEach(eventName => {
+  window.addEventListener(eventName, () => {
+    landingInteractionStarted = true;
+  }, { once: true, passive: eventName !== "keydown" });
+});
+
+function enforceStoryStart() {
+  if (landingInteractionStarted) return;
   cleanPageUrl();
-  window.requestAnimationFrame(() => window.scrollTo(0, 0));
+  window.scrollTo(0, 0);
+}
+
+window.addEventListener("pageshow", () => {
+  enforceStoryStart();
+  window.requestAnimationFrame(enforceStoryStart);
+  window.setTimeout(enforceStoryStart, 90);
+  window.setTimeout(enforceStoryStart, 260);
 });
 
 document.addEventListener("click", event => {
@@ -413,24 +429,90 @@ chartObserver.observe(chartCard);
 document.getElementById("year").textContent = new Date().getFullYear();
 
 
-/* Highlight the navigation item for the section currently in view */
-const navLinks = [...document.querySelectorAll('.site-header nav a')];
+/* Highlight navigation only after the visitor leaves the hero */
+const navLinks = [...document.querySelectorAll(".site-header nav a")];
 const observedSections = navLinks
-  .map(link => document.querySelector(link.getAttribute('href')))
+  .map(link => document.querySelector(link.getAttribute("href")))
   .filter(Boolean);
+const siteHeader = document.querySelector(".site-header");
+const challengeSection = document.getElementById("challenge");
+let navFrameRequested = false;
 
-const navObserver = new IntersectionObserver(entries => {
-  const visible = entries
-    .filter(entry => entry.isIntersecting)
-    .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
-  if (!visible) return;
+function updateActiveNavigation() {
+  navFrameRequested = false;
+  const headerOffset = (siteHeader?.offsetHeight || 76) + 48;
+  const readingLine = window.scrollY + headerOffset;
+  let activeSectionId = "";
+
+  if (challengeSection && readingLine >= challengeSection.offsetTop) {
+    observedSections.forEach(section => {
+      if (readingLine >= section.offsetTop) {
+        activeSectionId = section.id;
+      }
+    });
+  }
+
   navLinks.forEach(link => {
-    link.classList.toggle('active', link.getAttribute('href') === `#${visible.target.id}`);
+    link.classList.toggle(
+      "active",
+      link.getAttribute("href") === `#${activeSectionId}`
+    );
   });
-}, {rootMargin:'-25% 0px -60% 0px', threshold:[0,.15,.35,.6]});
+}
 
-observedSections.forEach(section => navObserver.observe(section));
+function requestNavigationUpdate() {
+  if (navFrameRequested) return;
+  navFrameRequested = true;
+  window.requestAnimationFrame(updateActiveNavigation);
+}
 
+window.addEventListener("scroll", requestNavigationUpdate, { passive: true });
+window.addEventListener("resize", requestNavigationUpdate);
+updateActiveNavigation();
+
+
+
+/* Compact mobile navigation */
+const menuToggle = document.getElementById("menuToggle");
+const mobileMenu = document.getElementById("mobileMenu");
+
+function setMobileMenu(open) {
+  if (!menuToggle || !mobileMenu) return;
+  menuToggle.classList.toggle("open", open);
+  mobileMenu.classList.toggle("open", open);
+  menuToggle.setAttribute("aria-expanded", String(open));
+  menuToggle.setAttribute(
+    "aria-label",
+    open ? "Close site navigation" : "Open site navigation"
+  );
+  mobileMenu.setAttribute("aria-hidden", String(!open));
+}
+
+menuToggle?.addEventListener("click", event => {
+  event.stopPropagation();
+  setMobileMenu(!mobileMenu.classList.contains("open"));
+});
+
+mobileMenu?.addEventListener("click", event => {
+  if (event.target.closest("a")) setMobileMenu(false);
+});
+
+document.addEventListener("click", event => {
+  if (!mobileMenu?.classList.contains("open")) return;
+  if (event.target.closest("#mobileMenu, #menuToggle")) return;
+  setMobileMenu(false);
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && mobileMenu?.classList.contains("open")) {
+    setMobileMenu(false);
+    menuToggle?.focus();
+  }
+});
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 800) setMobileMenu(false);
+});
 
 /* Expand project images without leaving the page */
 const lightbox = document.getElementById("imageLightbox");
