@@ -56,72 +56,162 @@ const workflowData = [
 ];
 
 let activeStep = 0;
+let lastWorkflowTrigger = null;
+let workflowFocusCloseTimer = null;
 
 const workflowSteps = document.getElementById("workflowSteps");
-const detailDots = document.getElementById("detailDots");
+const workflowFocus = document.getElementById("workflowFocus");
+const workflowFocusPanel = document.getElementById("workflowFocusPanel");
+const workflowFocusClose = document.getElementById("workflowFocusClose");
+const focusDots = document.getElementById("focusDots");
+const focusInformation = document.getElementById("focusInformation");
 
 workflowData.forEach((step, index) => {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "workflow-step";
-  button.setAttribute("aria-label", `Open stage ${index + 1}: ${step.title}`);
+  button.setAttribute("aria-label", `Zoom into stage ${index + 1}: ${step.title}`);
+  button.setAttribute("aria-haspopup", "dialog");
   button.innerHTML = `
     <span class="workflow-icon">${step.icon}</span>
     <span class="workflow-title">${step.title}</span>
     <span class="workflow-caption">${step.caption}</span>
+    <span class="workflow-open-hint">Focus view ↗</span>
   `;
-  button.addEventListener("click", () => showWorkflowStep(index, true));
+  button.addEventListener("click", () => openWorkflowFocus(index, button));
   workflowSteps.appendChild(button);
 
-  const dot = document.createElement("span");
-  dot.className = "detail-dot";
-  dot.setAttribute("aria-hidden", "true");
-  detailDots.appendChild(dot);
+  const dot = document.createElement("button");
+  dot.type = "button";
+  dot.className = "focus-dot";
+  dot.setAttribute("aria-label", `Go to stage ${index + 1}: ${step.title}`);
+  dot.addEventListener("click", () => updateWorkflowFocus(index, index >= activeStep ? 1 : -1));
+  focusDots.appendChild(dot);
 });
 
-function showWorkflowStep(index, scrollIntoView = false) {
-  activeStep = (index + workflowData.length) % workflowData.length;
-  const step = workflowData[activeStep];
-  const detailCard = document.getElementById("workflowDetail");
-  detailCard.classList.remove("detail-refresh");
-  void detailCard.offsetWidth;
-  detailCard.classList.add("detail-refresh");
-
-  document.getElementById("detailNumber").textContent =
-    `STAGE ${String(activeStep + 1).padStart(2, "0")}`;
-  document.getElementById("detailTitle").textContent = step.title;
-  document.getElementById("detailInput").textContent = step.input;
-  document.getElementById("detailProcess").textContent = step.process;
-  document.getElementById("detailOutput").textContent = step.output;
-  document.getElementById("detailValue").textContent = step.value;
-
+function setActiveWorkflowCard(index) {
   document.querySelectorAll(".workflow-step").forEach((button, buttonIndex) => {
-    const isActive = buttonIndex === activeStep;
+    const isActive = buttonIndex === index;
     button.classList.toggle("active", isActive);
     button.setAttribute("aria-pressed", String(isActive));
   });
 
-  document.querySelectorAll(".detail-dot").forEach((dot, dotIndex) => {
-    dot.classList.toggle("active", dotIndex === activeStep);
+  document.querySelectorAll(".focus-dot").forEach((dot, dotIndex) => {
+    const isActive = dotIndex === index;
+    dot.classList.toggle("active", isActive);
+    dot.setAttribute("aria-current", isActive ? "step" : "false");
   });
-
-  if (scrollIntoView && window.innerWidth < 800) {
-    document.getElementById("workflowDetail").scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  }
 }
 
-document.getElementById("prevStep").addEventListener("click", () => {
-  showWorkflowStep(activeStep - 1);
+function populateWorkflowFocus(index) {
+  const step = workflowData[index];
+  document.getElementById("focusIcon").textContent = step.icon;
+  document.getElementById("focusNumber").textContent =
+    `STAGE ${String(index + 1).padStart(2, "0")} OF ${String(workflowData.length).padStart(2, "0")}`;
+  document.getElementById("focusTitle").textContent = step.title;
+  document.getElementById("focusCaption").textContent = step.caption;
+  document.getElementById("focusInput").textContent = step.input;
+  document.getElementById("focusProcess").textContent = step.process;
+  document.getElementById("focusOutput").textContent = step.output;
+  document.getElementById("focusValue").textContent = step.value;
+  document.getElementById("focusProgressText").textContent = `${index + 1} / ${workflowData.length}`;
+}
+
+function updateWorkflowFocus(index, direction = 1) {
+  activeStep = (index + workflowData.length) % workflowData.length;
+  setActiveWorkflowCard(activeStep);
+
+  focusInformation.classList.remove("focus-swap-forward", "focus-swap-backward");
+  void focusInformation.offsetWidth;
+  focusInformation.classList.add(direction >= 0 ? "focus-swap-forward" : "focus-swap-backward");
+
+  populateWorkflowFocus(activeStep);
+}
+
+function openWorkflowFocus(index, trigger) {
+  if (workflowFocusCloseTimer) {
+    window.clearTimeout(workflowFocusCloseTimer);
+    workflowFocusCloseTimer = null;
+  }
+
+  lastWorkflowTrigger = trigger;
+  const rect = trigger.getBoundingClientRect();
+  workflowFocus.style.setProperty("--focus-x", `${rect.left + rect.width / 2}px`);
+  workflowFocus.style.setProperty("--focus-y", `${rect.top + rect.height / 2}px`);
+
+  updateWorkflowFocus(index, 1);
+  workflowSteps.classList.add("focus-mode");
+  workflowFocus.classList.add("open");
+  workflowFocus.setAttribute("aria-hidden", "false");
+  document.body.classList.add("workflow-focus-open");
+
+  window.requestAnimationFrame(() => workflowFocusClose.focus());
+}
+
+function closeWorkflowFocus() {
+  if (!workflowFocus.classList.contains("open")) return;
+
+  workflowFocus.classList.remove("open");
+  workflowFocus.setAttribute("aria-hidden", "true");
+  workflowSteps.classList.remove("focus-mode");
+  document.body.classList.remove("workflow-focus-open");
+
+  workflowFocusCloseTimer = window.setTimeout(() => {
+    if (lastWorkflowTrigger) lastWorkflowTrigger.focus();
+  }, 520);
+}
+
+function moveWorkflowFocus(amount) {
+  updateWorkflowFocus(activeStep + amount, amount);
+}
+
+document.getElementById("focusPrev").addEventListener("click", () => moveWorkflowFocus(-1));
+document.getElementById("focusNext").addEventListener("click", () => moveWorkflowFocus(1));
+workflowFocusClose.addEventListener("click", closeWorkflowFocus);
+
+workflowFocus.addEventListener("click", event => {
+  if (event.target.hasAttribute("data-workflow-close")) closeWorkflowFocus();
 });
 
-document.getElementById("nextStep").addEventListener("click", () => {
-  showWorkflowStep(activeStep + 1);
+document.addEventListener("keydown", event => {
+  if (!workflowFocus.classList.contains("open")) return;
+
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeWorkflowFocus();
+  }
+
+  if (event.key === "ArrowLeft") {
+    event.preventDefault();
+    moveWorkflowFocus(-1);
+  }
+
+  if (event.key === "ArrowRight") {
+    event.preventDefault();
+    moveWorkflowFocus(1);
+  }
+
+  if (event.key === "Tab") {
+    const focusable = [...workflowFocusPanel.querySelectorAll(
+      'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+    )].filter(element => element.offsetParent !== null);
+
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
 });
 
-showWorkflowStep(0);
+setActiveWorkflowCard(0);
+populateWorkflowFocus(0);
 
 /* Scroll reveal */
 const revealObserver = new IntersectionObserver(

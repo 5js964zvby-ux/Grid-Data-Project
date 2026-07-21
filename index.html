@@ -6,8 +6,8 @@
   <meta name="description" content="Interactive engineering project portfolio by Mason McGregor.">
   <meta name="theme-color" content="#071a2f">
   <title>Grid Data Project | Mason McGregor</title>
-  <link rel="stylesheet" href="style.css?v=4.1">
-  <script src="script.js?v=4.1" defer></script>
+  <link rel="stylesheet" href="style.css?v=5.0">
+  <script src="script.js?v=5.0" defer></script>
 </head>
 
 <body>
@@ -156,7 +156,8 @@
       <div class="section-intro reveal">
         <p class="eyebrow">INTERACTIVE WORKFLOW</p>
         <h2>Follow the data from source files to engineering decisions.</h2>
-        <p>Select any stage to see its input, process, output, and value.</p>
+        <p>Select a stage to zoom into its input, process, output, and engineering value.</p>
+        <p class="workflow-mode-note"><span>FOCUS MODE</span> Click any stage · use ← → to move · press Esc to close</p>
       </div>
 
       <div class="workflow-shell reveal">
@@ -164,40 +165,9 @@
         <div class="workflow-steps" id="workflowSteps"></div>
       </div>
 
-      <article class="workflow-detail reveal" id="workflowDetail">
-        <div class="detail-topline">
-          <div>
-            <span class="detail-number" id="detailNumber"></span>
-            <h3 id="detailTitle"></h3>
-          </div>
-          <span class="detail-status">ACTIVE STAGE</span>
-        </div>
-
-        <div class="detail-grid">
-          <section>
-            <span class="detail-label">INPUT</span>
-            <p id="detailInput"></p>
-          </section>
-          <section>
-            <span class="detail-label">PROCESS</span>
-            <p id="detailProcess"></p>
-          </section>
-          <section>
-            <span class="detail-label">OUTPUT</span>
-            <p id="detailOutput"></p>
-          </section>
-          <section>
-            <span class="detail-label">ENGINEERING VALUE</span>
-            <p id="detailValue"></p>
-          </section>
-        </div>
-
-        <div class="detail-controls">
-          <button type="button" id="prevStep">← Previous</button>
-          <div class="detail-dots" id="detailDots" aria-label="Workflow progress"></div>
-          <button type="button" id="nextStep">Next stage →</button>
-        </div>
-      </article>
+      <div class="workflow-focus-prompt reveal" aria-hidden="true">
+        <span>Choose a stage above to enter the interactive focus view.</span>
+      </div>
     </section>
 
     <section class="section section-light" id="results">
@@ -347,6 +317,59 @@
     <p>© <span id="year"></span> Mason McGregor</p>
     <p>Interactive engineering project portfolio</p>
   </footer>
+
+  <div class="workflow-focus" id="workflowFocus" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="focusTitle">
+    <div class="workflow-focus-backdrop" data-workflow-close></div>
+
+    <section class="workflow-focus-panel" id="workflowFocusPanel">
+      <button type="button" class="workflow-focus-close" id="workflowFocusClose" aria-label="Close focus view">×</button>
+
+      <div class="focus-stage-card">
+        <span class="focus-mode-label">PROCESS FOCUS</span>
+        <div class="focus-stage-icon" id="focusIcon">01</div>
+        <span class="focus-stage-number" id="focusNumber">STAGE 01 OF 06</span>
+        <h3 id="focusTitle">Raw Grid Data</h3>
+        <p id="focusCaption">Historical hourly records</p>
+        <div class="focus-flow-line" aria-hidden="true"><i></i></div>
+        <p class="focus-stage-help">Use the controls or keyboard arrows to travel through the workflow.</p>
+      </div>
+
+      <div class="focus-information" id="focusInformation">
+        <div class="focus-information-heading">
+          <div>
+            <p class="eyebrow">ZOOMED PROCESS VIEW</p>
+            <h4 id="focusHeading">How this stage works</h4>
+          </div>
+          <span class="focus-progress-text" id="focusProgressText">1 / 6</span>
+        </div>
+
+        <div class="focus-detail-grid">
+          <article>
+            <span>INPUT</span>
+            <p id="focusInput"></p>
+          </article>
+          <article>
+            <span>PROCESS</span>
+            <p id="focusProcess"></p>
+          </article>
+          <article>
+            <span>OUTPUT</span>
+            <p id="focusOutput"></p>
+          </article>
+          <article class="focus-value-card">
+            <span>ENGINEERING VALUE</span>
+            <p id="focusValue"></p>
+          </article>
+        </div>
+
+        <div class="focus-controls">
+          <button type="button" id="focusPrev">← Previous stage</button>
+          <div class="focus-dots" id="focusDots" aria-label="Workflow stage selection"></div>
+          <button type="button" id="focusNext">Next stage →</button>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <div class="lightbox" id="imageLightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Expanded project image">
     <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Close expanded image">×</button>

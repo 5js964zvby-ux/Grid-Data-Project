@@ -1551,3 +1551,544 @@ body.lightbox-open{
 .header-cta{
   white-space:nowrap;
 }
+
+
+/* ---------- Version 5 experiment: click-to-zoom workflow focus ---------- */
+.workflow-mode-note{
+  display:inline-flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+  margin:14px 0 0!important;
+  color:#aebfd0!important;
+  font-size:.82rem;
+}
+
+.workflow-mode-note span{
+  padding:5px 9px;
+  border:1px solid rgba(241,182,67,.4);
+  border-radius:999px;
+  color:var(--gold);
+  background:rgba(241,182,67,.08);
+  font-size:.66rem;
+  font-weight:900;
+  letter-spacing:.13em;
+}
+
+.workflow-focus-prompt{
+  display:flex;
+  justify-content:center;
+  margin-top:18px;
+  color:#94a9bc;
+  font-size:.82rem;
+}
+
+.workflow-step{
+  position:relative;
+  overflow:hidden;
+}
+
+.workflow-step::before{
+  content:"";
+  position:absolute;
+  inset:auto -35% -70% -35%;
+  height:90%;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(241,182,67,.18),transparent 66%);
+  opacity:0;
+  transition:opacity .25s ease,transform .25s ease;
+  transform:translateY(12px);
+}
+
+.workflow-step:hover::before,
+.workflow-step.active::before{
+  opacity:1;
+  transform:none;
+}
+
+.workflow-open-hint{
+  position:absolute;
+  right:13px;
+  bottom:11px;
+  color:var(--gold);
+  font-size:.68rem;
+  font-weight:850;
+  opacity:0;
+  transform:translateY(5px);
+  transition:opacity .2s ease,transform .2s ease;
+}
+
+.workflow-step:hover .workflow-open-hint,
+.workflow-step:focus-visible .workflow-open-hint{
+  opacity:1;
+  transform:none;
+}
+
+.workflow-steps.focus-mode .workflow-step:not(.active){
+  opacity:.42;
+  filter:saturate(.65);
+  transform:scale(.965);
+}
+
+.workflow-steps.focus-mode .workflow-step.active{
+  transform:translateY(-10px) scale(1.025);
+  box-shadow:0 24px 55px rgba(0,0,0,.28),0 0 0 1px rgba(241,182,67,.18);
+}
+
+.workflow-focus{
+  --focus-x:50vw;
+  --focus-y:50vh;
+  position:fixed;
+  inset:0;
+  z-index:170;
+  display:grid;
+  place-items:center;
+  padding:34px;
+  opacity:0;
+  visibility:hidden;
+  clip-path:circle(0 at var(--focus-x) var(--focus-y));
+  transition:
+    clip-path .52s cubic-bezier(.22,.78,.22,1),
+    opacity .24s ease,
+    visibility 0s linear .55s;
+}
+
+.workflow-focus.open{
+  opacity:1;
+  visibility:visible;
+  clip-path:circle(155vmax at var(--focus-x) var(--focus-y));
+  transition-delay:0s;
+}
+
+.workflow-focus-backdrop{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at var(--focus-x) var(--focus-y),rgba(47,117,173,.28),transparent 38%),
+    rgba(2,10,20,.93);
+  backdrop-filter:blur(15px);
+  cursor:zoom-out;
+}
+
+.workflow-focus-panel{
+  position:relative;
+  z-index:2;
+  width:min(1240px,96vw);
+  max-height:min(820px,91vh);
+  display:grid;
+  grid-template-columns:minmax(280px,.72fr) minmax(0,1.55fr);
+  overflow:auto;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:28px;
+  color:var(--ink);
+  background:#fff;
+  box-shadow:0 40px 130px rgba(0,0,0,.5);
+  opacity:0;
+  transform:translateY(28px) scale(.86);
+  transform-origin:var(--focus-x) var(--focus-y);
+  transition:opacity .34s ease .15s,transform .52s cubic-bezier(.2,.8,.2,1) .08s;
+}
+
+.workflow-focus.open .workflow-focus-panel{
+  opacity:1;
+  transform:none;
+}
+
+.workflow-focus-close{
+  position:absolute;
+  top:18px;
+  right:18px;
+  z-index:5;
+  width:44px;
+  height:44px;
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:50%;
+  color:#fff;
+  background:rgba(6,20,38,.42);
+  font-size:1.85rem;
+  line-height:1;
+  cursor:pointer;
+  transition:background .2s ease,transform .2s ease;
+}
+
+.workflow-focus-close:hover{
+  background:rgba(6,20,38,.72);
+  transform:rotate(6deg) scale(1.04);
+}
+
+.focus-stage-card{
+  position:relative;
+  min-height:650px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:58px 42px;
+  overflow:hidden;
+  color:#fff;
+  background:
+    radial-gradient(circle at 75% 24%,rgba(47,117,173,.42),transparent 34%),
+    linear-gradient(150deg,var(--navy-700),var(--navy-950));
+}
+
+.focus-stage-card::before,
+.focus-stage-card::after{
+  content:"";
+  position:absolute;
+  border:1px solid rgba(241,182,67,.24);
+  border-radius:50%;
+}
+
+.focus-stage-card::before{
+  width:360px;
+  height:360px;
+  right:-175px;
+  top:-130px;
+}
+
+.focus-stage-card::after{
+  width:250px;
+  height:250px;
+  left:-145px;
+  bottom:-95px;
+}
+
+.focus-mode-label{
+  position:relative;
+  z-index:2;
+  color:var(--gold);
+  font-size:.68rem;
+  font-weight:900;
+  letter-spacing:.16em;
+}
+
+.focus-stage-icon{
+  position:relative;
+  z-index:2;
+  display:grid;
+  width:82px;
+  height:82px;
+  place-items:center;
+  margin:36px 0 24px;
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:50%;
+  color:var(--gold);
+  background:rgba(255,255,255,.07);
+  box-shadow:0 0 50px rgba(47,117,173,.2);
+  font-size:1.35rem;
+  font-weight:900;
+}
+
+.focus-stage-number{
+  position:relative;
+  z-index:2;
+  color:#b8cad9;
+  font-size:.72rem;
+  font-weight:850;
+  letter-spacing:.12em;
+}
+
+.focus-stage-card h3{
+  position:relative;
+  z-index:2;
+  margin:.3em 0 .2em;
+  font-size:clamp(2.3rem,4vw,4.1rem);
+  line-height:1;
+  letter-spacing:-.04em;
+}
+
+.focus-stage-card>p:not(.focus-stage-help){
+  position:relative;
+  z-index:2;
+  margin:0;
+  color:#c8d6e2;
+  font-size:1.05rem;
+}
+
+.focus-flow-line{
+  position:relative;
+  z-index:2;
+  width:100%;
+  height:2px;
+  margin:42px 0 22px;
+  overflow:hidden;
+  background:rgba(255,255,255,.13);
+}
+
+.focus-flow-line i{
+  position:absolute;
+  inset:0 auto 0 -35%;
+  width:35%;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  animation:focusFlow 2.2s ease-in-out infinite;
+}
+
+.focus-stage-help{
+  position:relative;
+  z-index:2;
+  max-width:310px;
+  margin:0;
+  color:#92a9bc;
+  font-size:.82rem;
+}
+
+@keyframes focusFlow{to{left:100%}}
+
+.focus-information{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  padding:48px 48px 34px;
+}
+
+.focus-information-heading{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:24px;
+  margin-bottom:28px;
+}
+
+.focus-information-heading h4{
+  margin:.1em 0 0;
+  color:var(--navy-900);
+  font-size:clamp(1.9rem,3vw,2.8rem);
+  line-height:1.08;
+  letter-spacing:-.035em;
+}
+
+.focus-progress-text{
+  flex:0 0 auto;
+  padding:8px 11px;
+  border-radius:999px;
+  color:var(--navy-700);
+  background:#eef3f7;
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.focus-detail-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:17px;
+}
+
+.focus-detail-grid article{
+  min-height:165px;
+  padding:23px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#f9fbfc;
+}
+
+.focus-detail-grid article>span{
+  color:#6e8193;
+  font-size:.7rem;
+  font-weight:900;
+  letter-spacing:.13em;
+}
+
+.focus-detail-grid article p{
+  margin:.68em 0 0;
+  color:var(--ink);
+  font-size:1rem;
+}
+
+.focus-detail-grid .focus-value-card{
+  border-color:#ead8af;
+  background:linear-gradient(145deg,#fffaf0,#fff);
+}
+
+.focus-detail-grid .focus-value-card>span{
+  color:var(--gold-dark);
+}
+
+.focus-controls{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:18px;
+  margin-top:auto;
+  padding-top:28px;
+}
+
+.focus-controls>button{
+  padding:11px 0;
+  border:0;
+  color:var(--navy-700);
+  background:none;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.focus-controls>button:last-child{text-align:right}
+.focus-controls>button:first-child{text-align:left}
+
+.focus-dots{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+}
+
+.focus-dot{
+  width:10px;
+  height:10px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:#c9d4de;
+  cursor:pointer;
+  transition:transform .2s ease,background .2s ease;
+}
+
+.focus-dot.active{
+  background:var(--gold-dark);
+  transform:scale(1.35);
+}
+
+.focus-swap-forward{
+  animation:focusSwapForward .34s ease both;
+}
+
+.focus-swap-backward{
+  animation:focusSwapBackward .34s ease both;
+}
+
+@keyframes focusSwapForward{
+  0%{opacity:.25;transform:translateX(22px)}
+  100%{opacity:1;transform:none}
+}
+
+@keyframes focusSwapBackward{
+  0%{opacity:.25;transform:translateX(-22px)}
+  100%{opacity:1;transform:none}
+}
+
+body.workflow-focus-open{
+  overflow:hidden;
+}
+
+@media(max-width:900px){
+  .workflow-focus{
+    padding:12px;
+  }
+
+  .workflow-focus-panel{
+    grid-template-columns:1fr;
+    width:min(720px,97vw);
+    max-height:95vh;
+  }
+
+  .focus-stage-card{
+    min-height:auto;
+    padding:35px 30px 30px;
+  }
+
+  .focus-stage-icon{
+    width:64px;
+    height:64px;
+    margin:22px 0 16px;
+  }
+
+  .focus-stage-card h3{
+    font-size:2.4rem;
+  }
+
+  .focus-flow-line,
+  .focus-stage-help{
+    display:none;
+  }
+
+  .focus-information{
+    padding:30px;
+  }
+}
+
+@media(max-width:600px){
+  .workflow-mode-note{
+    line-height:1.45;
+  }
+
+  .workflow-focus{
+    padding:0;
+  }
+
+  .workflow-focus-panel{
+    width:100vw;
+    height:100dvh;
+    max-height:none;
+    border:0;
+    border-radius:0;
+  }
+
+  .workflow-focus-close{
+    position:fixed;
+    top:13px;
+    right:13px;
+  }
+
+  .focus-stage-card{
+    padding:28px 24px 24px;
+  }
+
+  .focus-stage-icon{
+    width:56px;
+    height:56px;
+    margin:18px 0 13px;
+    font-size:1rem;
+  }
+
+  .focus-stage-card h3{
+    font-size:2rem;
+  }
+
+  .focus-information{
+    padding:25px 20px 28px;
+  }
+
+  .focus-information-heading{
+    margin-bottom:20px;
+  }
+
+  .focus-information-heading h4{
+    font-size:1.65rem;
+  }
+
+  .focus-detail-grid{
+    grid-template-columns:1fr;
+  }
+
+  .focus-detail-grid article{
+    min-height:auto;
+    padding:18px;
+  }
+
+  .focus-controls{
+    position:sticky;
+    bottom:-28px;
+    margin:20px -20px -28px;
+    padding:16px 20px calc(16px + env(safe-area-inset-bottom));
+    background:rgba(255,255,255,.96);
+    border-top:1px solid var(--line);
+    backdrop-filter:blur(12px);
+  }
+
+  .focus-dots{
+    display:none;
+  }
+
+  .focus-controls{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .workflow-focus{
+    clip-path:none;
+  }
+
+  .focus-flow-line i{
+    animation:none;
+  }
+}
