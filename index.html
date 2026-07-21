@@ -6,8 +6,8 @@
   <meta name="description" content="Interactive engineering project portfolio by Mason McGregor.">
   <meta name="theme-color" content="#071a2f">
   <title>Grid Data Project | Mason McGregor</title>
-  <link rel="stylesheet" href="style.css?v=5.0">
-  <script src="script.js?v=5.0" defer></script>
+  <link rel="stylesheet" href="style.css?v=5.1">
+  <script src="script.js?v=5.1" defer></script>
 </head>
 
 <body>
@@ -157,7 +157,7 @@
         <p class="eyebrow">INTERACTIVE WORKFLOW</p>
         <h2>Follow the data from source files to engineering decisions.</h2>
         <p>Select a stage to zoom into its input, process, output, and engineering value.</p>
-        <p class="workflow-mode-note"><span>FOCUS MODE</span> Click any stage · use ← → to move · press Esc to close</p>
+        <p class="workflow-mode-note"><span>FOCUS MODE</span> Tap or click any stage · swipe or use the controls to move</p>
       </div>
 
       <div class="workflow-shell reveal">
@@ -334,7 +334,7 @@
         <p class="focus-stage-help">Use the controls or keyboard arrows to travel through the workflow.</p>
       </div>
 
-      <div class="focus-information" id="focusInformation">
+      <div class="focus-information" id="focusInformation" aria-live="polite">
         <div class="focus-information-heading">
           <div>
             <p class="eyebrow">ZOOMED PROCESS VIEW</p>
@@ -345,19 +345,19 @@
 
         <div class="focus-detail-grid">
           <article>
-            <span>INPUT</span>
+            <span class="focus-detail-label"><i aria-hidden="true">I</i>INPUT</span>
             <p id="focusInput"></p>
           </article>
           <article>
-            <span>PROCESS</span>
+            <span class="focus-detail-label"><i aria-hidden="true">P</i>PROCESS</span>
             <p id="focusProcess"></p>
           </article>
           <article>
-            <span>OUTPUT</span>
+            <span class="focus-detail-label"><i aria-hidden="true">O</i>OUTPUT</span>
             <p id="focusOutput"></p>
           </article>
           <article class="focus-value-card">
-            <span>ENGINEERING VALUE</span>
+            <span class="focus-detail-label"><i aria-hidden="true">V</i>ENGINEERING VALUE</span>
             <p id="focusValue"></p>
           </article>
         </div>

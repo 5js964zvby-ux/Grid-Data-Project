@@ -2092,3 +2092,158 @@ body.workflow-focus-open{
     animation:none;
   }
 }
+
+
+/* ---------- Version 5.1: story start + focus polish ---------- */
+
+/* Animated path showing how far the visitor has progressed through the workflow */
+.workflow-line{
+  overflow:hidden;
+}
+
+.workflow-line::after{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:var(--workflow-progress,0%);
+  background:linear-gradient(90deg,var(--gold-dark),var(--gold));
+  box-shadow:0 0 18px rgba(241,182,67,.55);
+  transition:width .48s cubic-bezier(.2,.75,.2,1);
+}
+
+/* The workflow assembles once when it first enters the viewport */
+.workflow-steps.assemble-ready:not(.assembled) .workflow-step{
+  opacity:0;
+  transform:translateY(30px) scale(.95);
+}
+
+.workflow-steps.assembled .workflow-step{
+  animation:workflowAssemble .58s cubic-bezier(.2,.8,.2,1) both;
+  animation-delay:calc(var(--step-index) * 75ms);
+}
+
+@keyframes workflowAssemble{
+  0%{
+    opacity:0;
+    transform:translateY(30px) scale(.95);
+  }
+  70%{
+    opacity:1;
+    transform:translateY(-4px) scale(1.012);
+  }
+  100%{
+    opacity:1;
+    transform:none;
+  }
+}
+
+/* Quick tactile response before the focus view opens */
+.workflow-step.launching{
+  z-index:4;
+  animation:workflowLaunch .19s ease both!important;
+  border-color:var(--gold)!important;
+}
+
+@keyframes workflowLaunch{
+  0%{transform:translateY(-8px) scale(1.025)}
+  55%{
+    transform:translateY(-13px) scale(1.075);
+    box-shadow:0 28px 64px rgba(0,0,0,.34),0 0 32px rgba(241,182,67,.2);
+  }
+  100%{transform:translateY(-10px) scale(1.045)}
+}
+
+/* Stage progress within the zoomed view */
+.focus-flow-line::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:var(--stage-progress,16.666%);
+  background:linear-gradient(90deg,var(--gold-dark),var(--gold));
+  transition:width .42s cubic-bezier(.2,.75,.2,1);
+}
+
+.focus-flow-line i{
+  z-index:2;
+}
+
+/* The stage summary on the left changes with the detail cards */
+.focus-stage-swap-forward{
+  animation:focusStageSwapForward .34s ease both;
+}
+
+.focus-stage-swap-backward{
+  animation:focusStageSwapBackward .34s ease both;
+}
+
+@keyframes focusStageSwapForward{
+  0%{filter:brightness(.8);transform:translateX(13px)}
+  100%{filter:none;transform:none}
+}
+
+@keyframes focusStageSwapBackward{
+  0%{filter:brightness(.8);transform:translateX(-13px)}
+  100%{filter:none;transform:none}
+}
+
+/* Small neutral icons make the four information types easier to scan */
+.focus-detail-label{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.focus-detail-label i{
+  display:grid;
+  width:25px;
+  height:25px;
+  place-items:center;
+  border-radius:50%;
+  color:var(--navy-700);
+  background:#eaf1f6;
+  font-size:.62rem;
+  font-style:normal;
+  font-weight:950;
+  letter-spacing:0;
+}
+
+.focus-value-card .focus-detail-label i{
+  color:#80560a;
+  background:#fff0cd;
+}
+
+/* More visible keyboard focus on interactive workflow cards */
+.workflow-step:focus-visible,
+.focus-controls button:focus-visible,
+.focus-dot:focus-visible{
+  outline:3px solid var(--gold);
+  outline-offset:4px;
+}
+
+@media(max-width:600px){
+  .workflow-mode-note{
+    align-items:flex-start;
+  }
+
+  .workflow-open-hint{
+    display:none;
+  }
+
+  .focus-information-heading h4{
+    max-width:82%;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .workflow-steps.assemble-ready:not(.assembled) .workflow-step{
+    opacity:1;
+    transform:none;
+  }
+
+  .workflow-steps.assembled .workflow-step,
+  .workflow-step.launching,
+  .focus-stage-swap-forward,
+  .focus-stage-swap-backward{
+    animation:none!important;
+  }
+}

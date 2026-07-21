@@ -1,8 +1,46 @@
+
+/* Story-first landing: the public QR opens at the hero, not a saved section hash */
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+
+function cleanPageUrl() {
+  const cleanUrl = `${window.location.pathname}${window.location.search}`;
+  history.replaceState(null, "", cleanUrl);
+}
+
+window.addEventListener("pageshow", () => {
+  cleanPageUrl();
+  window.requestAnimationFrame(() => window.scrollTo(0, 0));
+});
+
+document.addEventListener("click", event => {
+  const link = event.target.closest('a[href^="#"]');
+  if (!link) return;
+
+  const targetSelector = link.getAttribute("href");
+  const target = targetSelector === "#top"
+    ? document.getElementById("top")
+    : document.querySelector(targetSelector);
+
+  if (!target) return;
+
+  event.preventDefault();
+  target.scrollIntoView({
+    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth",
+    block: "start"
+  });
+  cleanPageUrl();
+});
+
 const workflowData = [
   {
     icon: "01",
     title: "Raw Grid Data",
     caption: "Historical hourly records",
+    heading: "Starting with the operating record",
     input: "Approximately ten years of timestamped MW, MVAR, metadata, and data-quality information.",
     process: "The workflow identifies source files and extracts the records required for analysis.",
     output: "A complete collection of raw historical operating records.",
@@ -12,6 +50,7 @@ const workflowData = [
     icon: "02",
     title: "Parse & Clean",
     caption: "Standardized, validated values",
+    heading: "Turning raw values into trusted data",
     input: "Raw records with inconsistent names, formats, and occasional invalid telemetry.",
     process: "Timestamps and measurements are parsed, names are standardized, and missing or impossible values are handled.",
     output: "Consistent, analysis-ready records.",
@@ -21,6 +60,7 @@ const workflowData = [
     icon: "03",
     title: "Searchable Database",
     caption: "Structured historical records",
+    heading: "Making ten years instantly retrievable",
     input: "Cleaned records and standardized component metadata.",
     process: "Records are organized and imported into a structured database for repeatable retrieval.",
     output: "A searchable historical data source.",
@@ -30,6 +70,7 @@ const workflowData = [
     icon: "04",
     title: "Statistical Analysis",
     caption: "Patterns, ranges, and behavior",
+    heading: "Converting history into measurable behavior",
     input: "Structured component-level historical data.",
     process: "The workflow calculates averages, extrema, standard deviation, skewness, and power-factor behavior.",
     output: "Comparable statistical summaries for each component and period.",
@@ -39,6 +80,7 @@ const workflowData = [
     icon: "05",
     title: "Visual Reports",
     caption: "Automated engineering plots",
+    heading: "Making patterns visible",
     input: "Historical records and calculated statistics.",
     process: "Automated reports generate time-series plots, rolling averages, seasonal overlays, markers, and event views.",
     output: "Clear visual summaries of long-term behavior.",
@@ -48,6 +90,7 @@ const workflowData = [
     icon: "06",
     title: "Engineering Decisions",
     caption: "Faster, defensible insight",
+    heading: "Applying insight to engineering work",
     input: "Clean data, statistics, and visual reports.",
     process: "Engineers apply the results to studies, modeling, planning, compliance, and ad hoc investigations.",
     output: "Repeatable evidence that supports technical decisions.",
@@ -58,13 +101,20 @@ const workflowData = [
 let activeStep = 0;
 let lastWorkflowTrigger = null;
 let workflowFocusCloseTimer = null;
+let workflowLaunchTimer = null;
+let touchStartX = 0;
+let touchStartY = 0;
 
 const workflowSteps = document.getElementById("workflowSteps");
+const workflowShell = document.querySelector(".workflow-shell");
 const workflowFocus = document.getElementById("workflowFocus");
 const workflowFocusPanel = document.getElementById("workflowFocusPanel");
 const workflowFocusClose = document.getElementById("workflowFocusClose");
 const focusDots = document.getElementById("focusDots");
 const focusInformation = document.getElementById("focusInformation");
+const focusStageCard = document.querySelector(".focus-stage-card");
+const focusPrevButton = document.getElementById("focusPrev");
+const focusNextButton = document.getElementById("focusNext");
 
 workflowData.forEach((step, index) => {
   const button = document.createElement("button");
@@ -72,13 +122,14 @@ workflowData.forEach((step, index) => {
   button.className = "workflow-step";
   button.setAttribute("aria-label", `Zoom into stage ${index + 1}: ${step.title}`);
   button.setAttribute("aria-haspopup", "dialog");
+  button.style.setProperty("--step-index", index);
   button.innerHTML = `
     <span class="workflow-icon">${step.icon}</span>
     <span class="workflow-title">${step.title}</span>
     <span class="workflow-caption">${step.caption}</span>
     <span class="workflow-open-hint">Focus view ↗</span>
   `;
-  button.addEventListener("click", () => openWorkflowFocus(index, button));
+  button.addEventListener("click", () => launchWorkflowFocus(index, button));
   workflowSteps.appendChild(button);
 
   const dot = document.createElement("button");
@@ -90,6 +141,11 @@ workflowData.forEach((step, index) => {
 });
 
 function setActiveWorkflowCard(index) {
+  const progress = workflowData.length > 1
+    ? (index / (workflowData.length - 1)) * 100
+    : 0;
+  workflowShell.style.setProperty("--workflow-progress", `${progress}%`);
+
   document.querySelectorAll(".workflow-step").forEach((button, buttonIndex) => {
     const isActive = buttonIndex === index;
     button.classList.toggle("active", isActive);
@@ -110,6 +166,11 @@ function populateWorkflowFocus(index) {
     `STAGE ${String(index + 1).padStart(2, "0")} OF ${String(workflowData.length).padStart(2, "0")}`;
   document.getElementById("focusTitle").textContent = step.title;
   document.getElementById("focusCaption").textContent = step.caption;
+  document.getElementById("focusHeading").textContent = step.heading;
+  focusStageCard.style.setProperty(
+    "--stage-progress",
+    `${((index + 1) / workflowData.length) * 100}%`
+  );
   document.getElementById("focusInput").textContent = step.input;
   document.getElementById("focusProcess").textContent = step.process;
   document.getElementById("focusOutput").textContent = step.output;
@@ -121,11 +182,36 @@ function updateWorkflowFocus(index, direction = 1) {
   activeStep = (index + workflowData.length) % workflowData.length;
   setActiveWorkflowCard(activeStep);
 
+  const swapClass = direction >= 0 ? "focus-swap-forward" : "focus-swap-backward";
+
   focusInformation.classList.remove("focus-swap-forward", "focus-swap-backward");
+  focusStageCard.classList.remove("focus-stage-swap-forward", "focus-stage-swap-backward");
   void focusInformation.offsetWidth;
-  focusInformation.classList.add(direction >= 0 ? "focus-swap-forward" : "focus-swap-backward");
+  void focusStageCard.offsetWidth;
+  focusInformation.classList.add(swapClass);
+  focusStageCard.classList.add(
+    direction >= 0 ? "focus-stage-swap-forward" : "focus-stage-swap-backward"
+  );
 
   populateWorkflowFocus(activeStep);
+}
+
+
+function launchWorkflowFocus(index, trigger) {
+  if (workflowLaunchTimer) {
+    window.clearTimeout(workflowLaunchTimer);
+  }
+
+  setActiveWorkflowCard(index);
+  trigger.classList.remove("launching");
+  void trigger.offsetWidth;
+  trigger.classList.add("launching");
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  workflowLaunchTimer = window.setTimeout(() => {
+    trigger.classList.remove("launching");
+    openWorkflowFocus(index, trigger);
+  }, reduceMotion ? 0 : 190);
 }
 
 function openWorkflowFocus(index, trigger) {
@@ -145,7 +231,11 @@ function openWorkflowFocus(index, trigger) {
   workflowFocus.setAttribute("aria-hidden", "false");
   document.body.classList.add("workflow-focus-open");
 
-  window.requestAnimationFrame(() => workflowFocusClose.focus());
+  workflowFocusPanel.scrollTop = 0;
+  window.requestAnimationFrame(() => {
+    workflowFocusPanel.scrollTop = 0;
+    workflowFocusClose.focus({ preventScroll: true });
+  });
 }
 
 function closeWorkflowFocus() {
@@ -168,6 +258,27 @@ function moveWorkflowFocus(amount) {
 document.getElementById("focusPrev").addEventListener("click", () => moveWorkflowFocus(-1));
 document.getElementById("focusNext").addEventListener("click", () => moveWorkflowFocus(1));
 workflowFocusClose.addEventListener("click", closeWorkflowFocus);
+
+
+workflowFocusPanel.addEventListener("touchstart", event => {
+  const touch = event.changedTouches[0];
+  touchStartX = touch.clientX;
+  touchStartY = touch.clientY;
+}, { passive: true });
+
+workflowFocusPanel.addEventListener("touchend", event => {
+  const touch = event.changedTouches[0];
+  const deltaX = touch.clientX - touchStartX;
+  const deltaY = touch.clientY - touchStartY;
+
+  if (Math.abs(deltaX) < 65 || Math.abs(deltaX) < Math.abs(deltaY) * 1.35) {
+    return;
+  }
+
+  moveWorkflowFocus(deltaX < 0 ? 1 : -1);
+}, { passive: true });
+
+
 
 workflowFocus.addEventListener("click", event => {
   if (event.target.hasAttribute("data-workflow-close")) closeWorkflowFocus();
@@ -212,6 +323,22 @@ document.addEventListener("keydown", event => {
 
 setActiveWorkflowCard(0);
 populateWorkflowFocus(0);
+
+
+/* Assemble the workflow cards once when the visitor reaches the section */
+workflowSteps.classList.add("assemble-ready");
+
+const workflowAssemblyObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    workflowSteps.classList.add("assembled");
+    workflowAssemblyObserver.unobserve(workflowSteps);
+  });
+}, { threshold: 0.22 });
+
+workflowAssemblyObserver.observe(workflowSteps);
+
+
 
 /* Scroll reveal */
 const revealObserver = new IntersectionObserver(
